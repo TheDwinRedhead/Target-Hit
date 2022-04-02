@@ -1,0 +1,71 @@
+
+<meta charset="UTF-8">
+
+<canvas width="600" height="400"></canvas>
+
+<script>
+  var screen = document.querySelector('canvas')
+  var brushTool = screen.getContext('2d')
+
+  brushTool.fillStyle = 'grey'
+  brushTool.fillRect(0, 0, 600, 400)
+
+  function clearScreen() {
+    brushTool.clearRect(0, 0, 600, 400)
+  }
+
+  function raffleX(min, max) {
+    min = Math.ceil(50);
+    max = Math.floor(550);
+    return Math.round(Math.random() * (max - min) + min)
+  }
+
+  function raffleY(min, max) {
+    min = Math.ceil(50);
+    max = Math.floor(350);
+    return Math.round(Math.random() * (max - min) + min)
+  }
+
+  function creatCircle(color, x, y, rad) {
+    brushTool.fillStyle = color
+    brushTool.beginPath()
+    brushTool.arc(x, y, rad, 0, 2 * Math.PI)
+    brushTool.fill()
+  }
+
+  function creatTarget(){
+    x = raffleX()
+    y = raffleY()
+
+    clearScreen()
+    
+    creatCircle('red', x, y, 25)
+    creatCircle('white', x, y, 20)
+    creatCircle('red', x, y, 15)
+    creatCircle('white', x, y, 10)
+    creatCircle('red', x, y, 5)
+
+  }
+
+  function trigger(evento) {
+    var xShoot = evento.pageX - screen.offsetLeft
+    var yShoot = evento.pageY - screen.offsetTop
+  
+    if (xShoot <= x + 5 && xShoot >= x - 5 && yShoot >= y - 5 && yShoot <= y + 5) {
+      alert('Você acertou NO MEIO')
+    } else if (xShoot <= x + 25 && xShoot >= x - 25 && yShoot >= y - 25 && yShoot <= y + 25){
+      alert('Você acertou o alvo')
+    }else {
+      alert('Você errou tente novamente')
+    }
+  }
+  
+  screen.onclick = function reaction(evento) {
+    trigger(evento)
+    
+  }
+
+  creatTarget()
+  setInterval(creatTarget, 700)
+  
+</script>
